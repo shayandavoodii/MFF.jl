@@ -1,8 +1,3 @@
-using YFinance
-using DataFrames
-using Dates
-
-
 """
     get_data(::Val{:df}, stock::String, startdt::String, enddt::String; prprty::String="adjclose", rng::Nothing=nothing, fixdt::Bool=true)::DataFrame
 
