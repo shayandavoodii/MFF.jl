@@ -1,10 +1,14 @@
 name = "MFF"
 uuid = "99a43ef4-9f3f-47d4-9871-ef3d7e68cea8"
 authors = ["Shayan Davoodi"]
-version = "1.0.0-DEV"
+version = "1.0.0"
+
+[deps]
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+YFinance = "e4b3b0a2-f9a3-42f3-aabb-32142cceaf77"
 
 [compat]
-julia = "1"
+julia = "1.8"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
