@@ -1,5 +1,7 @@
 module MFF
 
-# Write your package code here.
+include("get_data.jl")
+
+export get_data
 
 end
