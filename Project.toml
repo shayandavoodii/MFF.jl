@@ -5,6 +5,7 @@ version = "1.0.0"
 
 [deps]
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 YFinance = "e4b3b0a2-f9a3-42f3-aabb-32142cceaf77"
 
 [compat]
