@@ -8,7 +8,7 @@ This tiny package provides a simple framework for fetching data from the Yahoo F
 The package can be installed using the Julia package manager. From the Julia REPL, type `]` to enter the Pkg REPL mode and run:
 
 ```julia
-pkg> add MFF
+pkg> add https://github.com/shayandavoodii/MFF.git
 ```
 
 # Usage
