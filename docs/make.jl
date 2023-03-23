@@ -1,11 +1,11 @@
 using Documenter
 using MFF
 
-DocMeta.setdocmeta!(MFF, :DocTestSetup, :(using MFF))
+DocMeta.setdocmeta!(MFF, :DocTestSetup, :(using MFF); recursive=true)
 
 makedocs(
+    modules = [MFF],
     authors="Shayan Davoodi <sh0davoodi@gmail.com>",
-    repo="https://github.com/ShayanDavoodii/MFF",
     format = Documenter.HTML(
         canonical = "https://shayandavoodii.github.io/MFF/",
         edit_link = "https://github.com/shayandavoodii/MFF/gh-pages/docs/src/",
