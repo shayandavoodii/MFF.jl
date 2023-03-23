@@ -3,10 +3,12 @@ using MFF
 
 DocMeta.setdocmeta!(MFF, :DocTestSetup, :(using MFF))
 
-makedocs(;
+makedocs(
+    authors="Shayan Davoodi <sh0davoodi@gmail.com>",
+    repo="https://github.com/ShayanDavoodii/MFF",
+    sitename="MFF",
     format = Documenter.HTML(
         canonical = "https://shayandavoodii.github.io/MFF/",
-        edit_link = "https://github.com/shayandavoodii/MFF/gh-pages/docs/src/",
         prettyurls = get(ENV, "CI", nothing) == "true"
     ),
     pages = [
