@@ -14,3 +14,8 @@ makedocs(;
         ],
     sitename = "MFF",
 )
+
+deploydocs(
+    repo="github.com/ShayanDavoodii/MFF.git",
+    devbranch = "master"
+)
