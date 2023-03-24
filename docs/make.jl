@@ -9,7 +9,6 @@ makedocs(
     authors="Shayan Davoodi <sh0davoodi@gmail.com>",
     format = Documenter.HTML(
         canonical = "https://shayandavoodii.github.io/MFF/",
-        edit_link = "master",
         prettyurls = get(ENV, "CI", nothing) == "true"
     ),
     pages = [
