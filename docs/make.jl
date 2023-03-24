@@ -18,6 +18,6 @@ makedocs(
 )
 
 deploydocs(
-    repo="github.com/ShayanDavoodii/MFF.git",
+    repo="github.com/shayandavoodii/MFF.git",
     devbranch = "master"
 )
