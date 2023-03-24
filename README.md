@@ -1,6 +1,7 @@
 # MFF
 
 [![Coverage](https://codecov.io/gh/shayandavoodii/MFF.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/shayandavoodii/MFF.jl)
+[![CI](https://github.com/shayandavoodii/MFF/actions/workflows/ci.yml/badge.svg)](https://github.com/shayandavoodii/MFF/actions/workflows/ci.yml)
 
 This tiny package provides a simple framework for fetching data from the Yahoo Finance API. It is designed to be used with `DataFrames.jl` and `YFinance.jl`. However, the `DataFrames.jl` dependency can be included as an extension in Julia 1.9+. The package is designed for my personal use and is not intended to be used by others. However, if you find it useful, feel free to use it.  
 
