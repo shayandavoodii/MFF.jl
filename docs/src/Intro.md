@@ -42,4 +42,4 @@ julia> get_data(Val(:vec), ["AAPL", "MSFT"], "2020-01-01", "2020-01-10", prprty=
  75.1343  156.945
 ```
 And the following plot is generated automatically:  
-![Alt text](../build/assets/ss.png)
+![Alt text](../build/assets/Open.png)
