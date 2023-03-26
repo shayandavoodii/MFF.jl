@@ -42,4 +42,6 @@ julia> get_data(Val(:vec), ["AAPL", "MSFT"], "2020-01-01", "2020-01-10", prprty=
  75.1343  156.945
 ```
 And the following plot is generated automatically:  
-![Alt text](../build/assets/Open.png)
+```@raw html
+<img src="../build/assets/Open.png" alt="Open" style="width: 100%;"/>
+```
