@@ -12,8 +12,9 @@ makedocs(
         prettyurls = get(ENV, "CI", nothing) == "true"
     ),
     pages = [
-        "Home" => "Intro.md",
-        "API" => "index.md"
+        "Home" => "index.md",
+        "API" => [
+          "Functions" => "functions.md"
         ],
     sitename = "MFF",
 )
