@@ -12,8 +12,9 @@ YFinance = "e4b3b0a2-f9a3-42f3-aabb-32142cceaf77"
 
 [compat]
 julia = "1.8"
-Plots = "1.38.8"
-StatsPlots = "0.15.4"
+Plots = "=1.38.8"
+StatsPlots = "=0.15.4"
+YFinance = "=0.1.2"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
