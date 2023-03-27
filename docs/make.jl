@@ -16,6 +16,7 @@ makedocs(
         "API" => [
           "Functions" => "functions.md"
         ],
+    ]
     sitename = "MFF",
 )
 
