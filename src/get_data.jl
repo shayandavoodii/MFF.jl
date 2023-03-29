@@ -14,6 +14,7 @@ Fetch data from Yahoo Finance and return a DataFrame.
 - `rng::Nothing=nothing`: The range of the data. The other options are `"1d"`, `"5d"`, `"1mo"`, `"3mo"`, `"6mo"`, `"1y"`, `"2y"`, `"5y"`, `"10y"`.
 - `fixdt::Bool=true`: Fix the dates. If `true`, the dates will be fixed to the range of the data. If `false`, the dates will be the dates of the data.
 - `plot::Bool=false`: Plot the data.
+- `kwargs::NamedTuple=(;title=prprty)`: The keyword arguments for the `plot` function. The default title is the property. The other options are `legend`, `legend_title`, `ylabel`, `title`, `size`, `left_margin`, `bottom_margin`, `dpi`, and `marker`.
 
 # Returns
 - `::DataFrame`: The DataFrame of the data.
@@ -77,7 +78,8 @@ function get_data(
   prprty::String="adjclose",
   rng::Nothing=nothing,
   fixdt::Bool=true,
-  plot::Bool=false
+  plot::Bool=false,
+  kwargs::NamedTuple=(;title=prprty)
 )::DataFrame
 
   @assert Date(enddt)>Date(startdt) "The end date ($enddt) isn't greater than start date ($startdt))"
@@ -90,7 +92,7 @@ function get_data(
   dataframe = DataFrame([val], [stock])
   fixdt && fix_dates!(dataframe, date)
   fixdt || insertcols!(dataframe, 1, :date => date)
-  plot && plot_data(dataframe, prprty)
+  plot && plot_data(dataframe, prprty, kwargs=kwargs)
   return dataframe
 end;
 
@@ -101,7 +103,8 @@ function get_data(
   enddt::String;
   prprty::String="adjclose",
   rng::Nothing=nothing,
-  plot::Bool=false
+  plot::Bool=false,
+  kwargs::NamedTuple=(;title=prprty)
 )::Vector{Float64}
 
   @assert Date(enddt)>Date(startdt) "The end date ($enddt) isn't greater than start date ($startdt))"
@@ -109,7 +112,7 @@ function get_data(
   dict = get_prices(stock, startdt=startdt, enddt=enddt, range=rng)
   val = get(dict, prprty, nothing)
   check_prprty(val, prprty)
-  plot && plot_data(val, prprty, stock)
+  plot && plot_data(val, prprty, stock, kwargs=kwargs)
   return val
 end;
 
@@ -121,7 +124,8 @@ function get_data(
   prprty::String="adjclose",
   rng::Nothing=nothing,
   fixdt::Bool=true,
-  plot::Bool=false
+  plot::Bool=false,
+  kwargs::NamedTuple=(;title=prprty)
 )::DataFrame
 
   @assert Date(enddt)>Date(startdt) "The end date ($enddt) isn't greater than start date ($startdt))"
@@ -134,7 +138,7 @@ function get_data(
   date = Date.(datetime)
   fixdt && fix_dates!(dataframe, date)
   fixdt || insertcols!(dataframe, 1, :date => date)
-  plot && plot_data(dataframe, prprty)
+  plot && plot_data(dataframe, prprty, kwargs=kwargs)
   return dataframe
 end;
 
@@ -145,8 +149,8 @@ function get_data(
   enddt::String;
   prprty::String="adjclose",
   rng::Nothing=nothing,
-  fixdt::Bool=true,
-  plot::Bool=false
+  plot::Bool=false,
+  kwargs::NamedTuple=(;title=prprty)
 )::Matrix{Float64}
 
   @assert Date(enddt)>Date(startdt) "The end date ($enddt) isn't greater than start date ($startdt))"
@@ -155,6 +159,6 @@ function get_data(
   vec_of_vecs = get.(vec_of_dicts, prprty, nothing)
   check_prprty.(vec_of_vecs, prprty)
   mat = reduce(hcat, vec_of_vecs)
-  plot && plot_data(mat, prprty, stock)
+  plot && plot_data(mat, prprty, stock, kwargs=kwargs)
   return mat
 end;
