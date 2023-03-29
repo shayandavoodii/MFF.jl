@@ -2,6 +2,7 @@ using MFF
 using Dates
 using DataFrames
 using Test
+using CSV
 push!(LOAD_PATH,"../src/")
 
 @testset "MFF.jl" begin
@@ -83,6 +84,15 @@ push!(LOAD_PATH,"../src/")
       "2020-01-10",
       "2020-01-15",
       prprty="wrong"
+    )
+  end
+
+  @testset "Wrong path in `gs`" begin
+    @test_throws ArgumentError gs(
+      ["AAPL"],
+      "2020-01-10",
+      "2020-01-15",
+      "What's up"
     )
   end
 end
