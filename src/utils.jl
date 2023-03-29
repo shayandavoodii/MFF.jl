@@ -1,6 +1,18 @@
 using Plots
 using StatsPlots
 
+const PLOT_KWARGS = (;
+  legend=:outerright,
+  legend_title="Stocks",
+  ylabel="Value",
+  title="",
+  size=(1000, 600),
+  left_margin=5Plots.mm,
+  bottom_margin=5Plots.mm,
+  dpi=300,
+  marker=:none,
+)
+
 """
     fix_dates!(df::DataFrame, dates::Vector{Date})
 
@@ -47,7 +59,7 @@ julia> df
 """
 function fix_dates!(df::DataFrame, dates::Vector{Date})
   firstdate = first(dates)
-  enddate = (size(df, 1)*Day(1))+firstdate-Day(1)
+  enddate = (nrow(df)*Day(1))+firstdate-Day(1)
   rngdate = Date(firstdate):Day(1):enddate
   insertcols!(df, 1, :date => rngdate)
 end
@@ -59,54 +71,65 @@ function check_prprty(val, prprty)
   )
 end
 
-function plot_data(df::DataFrame, title::String)
-  n_stocks = size(df, 2)-1
+function plot_data(df::DataFrame, title::String; kwargs::NamedTuple=PLOT_KWARGS)
+  n_stocks = ncol(df)-1
   dates = @view df[!, :date]
+  kwargs = merge((;title=title), kwargs)
+  kwargs = merge(PLOT_KWARGS, kwargs)
   p = @df @view(df[!, 2:end]) plot(
     dates, cols(1:n_stocks),
-    legend=:outerright,
-    legend_title="Stocks",
-    ylabel="Value",
-    title=title*" values",
-    size=(1000, 600),
-    left_margin=5Plots.mm,
-    bottom_margin=5Plots.mm,
-    dpi=300,
-    marker=:circle,
+    legend=kwargs.legend,
+    legend_title=kwargs.legend_title,
+    ylabel=kwargs.ylabel,
+    title=kwargs.title*" values",
+    size=kwargs.size,
+    left_margin=kwargs.left_margin,
+    bottom_margin=kwargs.bottom_margin,
+    dpi=kwargs.dpi,
+    marker=kwargs.marker,
   )
   display(p)
 end
 
-function plot_data(df::Matrix, title::String, stocks::Vector{String})
+function plot_data(
+  df::Matrix,
+  title::String,
+  stocks::Vector{String};
+  kwargs::NamedTuple=PLOT_KWARGS
+)
+  kwargs = merge((;title=title), kwargs)
+  kwargs = merge(PLOT_KWARGS, kwargs)
   p = plot(
     df,
-    legend=:outerright,
-    legend_title="Stocks",
+    legend=kwargs.legend,
+    legend_title=kwargs.legend_title,
     label=permutedims(stocks),
-    ylabel="Value",
-    title=title*" values",
-    size=(1000, 600),
-    left_margin=5Plots.mm,
-    bottom_margin=5Plots.mm,
-    dpi=300,
-    marker=:circle,
+    ylabel=kwargs.ylabel,
+    title=kwargs.title*" values",
+    size=kwargs.size,
+    left_margin=kwargs.left_margin,
+    bottom_margin=kwargs.bottom_margin,
+    dpi=kwargs.dpi,
+    marker=kwargs.marker,
   )
   display(p)
 end
 
-function plot_data(df::Vector, title::String, stock::String)
+function plot_data(df::Vector, title::String, stock::String; kwargs::NamedTuple=PLOT_KWARGS)
+  kwargs = merge((;title=title), kwargs)
+  kwargs = merge(PLOT_KWARGS, kwargs)
   p = plot(
     df,
-    legend=:outerright,
-    legend_title="Stock",
+    legend=kwargs.legend,
+    legend_title=kwargs.legend_title,
     label=stock,
-    ylabel="Value",
-    title=title*" values",
-    size=(1000, 600),
-    left_margin=5Plots.mm,
-    bottom_margin=5Plots.mm,
-    dpi=300,
-    marker=:circle,
+    ylabel=kwargs.ylabel,
+    title=kwargs.title*" values",
+    size=kwargs.size,
+    left_margin=kwargs.left_margin,
+    bottom_margin=kwargs.bottom_margin,
+    dpi=kwargs.dpi,
+    marker=kwargs.marker,
   )
   display(p)
 end
