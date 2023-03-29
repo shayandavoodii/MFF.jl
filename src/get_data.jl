@@ -76,14 +76,13 @@ function get_data(
   startdt::String,
   enddt::String;
   prprty::String="adjclose",
-  rng::Nothing=nothing,
+  rng::String="1d",
   fixdt::Bool=true,
   plot::Bool=false,
   kwargs::NamedTuple=(;title=prprty)
 )::DataFrame
 
   @assert Date(enddt)>Date(startdt) "The end date ($enddt) isn't greater than start date ($startdt))"
-  isnothing(rng) ? rng="1d" : rng=rng
   dict = get_prices(stock, startdt=startdt, enddt=enddt, range=rng)
   val = get(dict, prprty, nothing)
   check_prprty(val, prprty)
@@ -102,13 +101,12 @@ function get_data(
   startdt::String,
   enddt::String;
   prprty::String="adjclose",
-  rng::Nothing=nothing,
+  rng::String="1d",
   plot::Bool=false,
   kwargs::NamedTuple=(;title=prprty)
 )::Vector{Float64}
 
   @assert Date(enddt)>Date(startdt) "The end date ($enddt) isn't greater than start date ($startdt))"
-  isnothing(rng) ? rng="1d" : rng=rng
   dict = get_prices(stock, startdt=startdt, enddt=enddt, range=rng)
   val = get(dict, prprty, nothing)
   check_prprty(val, prprty)
@@ -122,14 +120,13 @@ function get_data(
   startdt::String,
   enddt::String;
   prprty::String="adjclose",
-  rng::Nothing=nothing,
+  rng::String="1d",
   fixdt::Bool=true,
   plot::Bool=false,
   kwargs::NamedTuple=(;title=prprty)
 )::DataFrame
 
   @assert Date(enddt)>Date(startdt) "The end date ($enddt) isn't greater than start date ($startdt))"
-  isnothing(rng) ? rng="1d" : rng=rng
   vec_of_dicts = get_prices.(stock, startdt=startdt, enddt=enddt, range=rng)
   vec_of_vecs = get.(vec_of_dicts, prprty, nothing)
   check_prprty.(vec_of_vecs, prprty)
@@ -148,17 +145,75 @@ function get_data(
   startdt::String,
   enddt::String;
   prprty::String="adjclose",
-  rng::Nothing=nothing,
+  rng::String="1d",
   plot::Bool=false,
   kwargs::NamedTuple=(;title=prprty)
 )::Matrix{Float64}
 
   @assert Date(enddt)>Date(startdt) "The end date ($enddt) isn't greater than start date ($startdt))"
-  isnothing(rng) ? rng="1d" : rng=rng
   vec_of_dicts = get_prices.(stock, startdt=startdt, enddt=enddt, range=rng)
   vec_of_vecs = get.(vec_of_dicts, prprty, nothing)
   check_prprty.(vec_of_vecs, prprty)
   mat = reduce(hcat, vec_of_vecs)
   plot && plot_data(mat, prprty, stock, kwargs=kwargs)
   return mat
+end;
+
+"""
+    gs(stocks::Vector{String}, startdt::String, enddt::String, path::String; rng::Union{Nothing, String}=nothing, market::String="", prefix::String="", suffix::String="")
+
+Get "adjusted close", "high", "low", "open", and "volume" data for a set of stocks and save them to a csv file.
+
+# Arguments
+- `stocks::Vector{String}`: A vector of stock tickers.
+- `startdt::String`: The start date of the data.
+- `enddt::String`: The end date of the data.
+- `path::String`: The path to save the csv file.
+- `rng::String="1d"`: The range of the data.
+- `market::String=""`: The market of the stocks.
+- `prefix::String=""`: The prefix of the csv file name.
+- `suffix::String=""`: The suffix of the csv file name.
+
+# Example
+```julia
+julia> gs(["AAPL", "MSFT"], "2020-01-01", "2020-01-31", pwd())
+Saved close data to <PATH>
+Saved high data to <PATH>
+Saved low data to <PATH>
+Saved open data to <PATH>
+Saved volume data to <PATH>
+Saved dates data to <PATH>
+```
+"""
+function gs(
+  stocks::Vector{String},
+  startdt::String,
+  enddt::String,
+  path::String;
+  rng::String="1d",
+  market::String="",
+  prefix::String="",
+  suffix::String="",
+)
+  ispath(path) || throw(ArgumentError("The path ($path) doesn't exist"))
+  close = get_data(Val(:df), stocks, startdt, enddt, rng=rng, fixdt=true)
+  high = get_data(Val(:df), stocks, startdt, enddt, rng=rng, prprty="high", fixdt=true)
+  low = get_data(Val(:df), stocks, startdt, enddt, rng=rng, prprty="low", fixdt=true)
+  open = get_data(Val(:df), stocks, startdt, enddt, rng=rng, prprty="open", fixdt=true)
+  volume = get_data(Val(:df), stocks, startdt, enddt, rng=rng, prprty="vol", fixdt=true)
+  dates = get_data(Val(:df), first(stocks), startdt, enddt, rng=rng, prprty="timestamp", fixdt=false)
+  select!(dates, 1)
+
+  CSV.write(joinpath(path, prefix*"close_$(market)"*suffix*".csv"), close)
+  println("Saved close data to $(joinpath(path, prefix*"close_$(market)"*suffix*".csv"))")
+  CSV.write(joinpath(path, prefix*"high_$(market)"*suffix*".csv"), high)
+  println("Saved high data to $(joinpath(path, prefix*"high_$(market)"*suffix*".csv"))")
+  CSV.write(joinpath(path, prefix*"low_$(market)"*suffix*".csv"), low)
+  println("Saved low data to $(joinpath(path, prefix*"low_$(market)"*suffix*".csv"))")
+  CSV.write(joinpath(path, prefix*"open_$(market)"*suffix*".csv"), open)
+  println("Saved open data to $(joinpath(path, prefix*"open_$(market)"*suffix*".csv"))")
+  CSV.write(joinpath(path, prefix*"volume_$(market)"*suffix*".csv"), volume)
+  println("Saved volume data to $(joinpath(path, prefix*"volume_$(market)"*suffix*".csv"))")
+  CSV.write(joinpath(path, prefix*"dates_$(market)"*suffix*".csv"), dates)
+  println("Saved dates data to $(joinpath(path, prefix*"dates_$(market)"*suffix*".csv"))")
 end;
