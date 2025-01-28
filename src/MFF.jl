@@ -1,9 +1,7 @@
 module MFF
 
 using YFinance
-using DataFrames
 using Dates
-using CSV
 
 include("get_data.jl")
 
