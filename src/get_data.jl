@@ -1,5 +1,3 @@
-include("utils.jl")
-
 """
     get_data(
       ::Val{:df},
@@ -79,8 +77,6 @@ julia> get_data(Val(:vec), ["AAPL", "MSFT"], "2020-01-10", "2020-01-15", prprty=
 77.6605  158.652
 ```
 """
-function get_data end
-
 function get_data(
   ::Val{:vec},
   stock::String,
@@ -98,9 +94,7 @@ function get_data(
   MFF.check_prprty(val, prprty)
   plot && plot_data(val, prprty, stock, kwargs=kwargs)
   return val
-end;
-
-function get_data() end
+end
 
 function get_data(
   ::Val{:vec},
@@ -120,7 +114,7 @@ function get_data(
   mat = reduce(hcat, vec_of_vecs)
   plot && plot_data(mat, prprty, stock, kwargs=kwargs)
   return mat
-end;
+end
 
 """
     gs(stocks::Vector{String}, startdt::String, enddt::String, path::String; rng::Union{Nothing, String}=nothing, market::String="", prefix::String="", suffix::String="")
