@@ -4,17 +4,25 @@ authors = ["Shayan Davoodi"]
 version = "2.2.0"
 
 [deps]
-CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
-DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+YFinance = "e4b3b0a2-f9a3-42f3-aabb-32142cceaf77"
+
+[weakdeps]
+DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 StatsPlots = "f3b207a7-027a-5e70-b257-86293d7955fd"
-YFinance = "e4b3b0a2-f9a3-42f3-aabb-32142cceaf77"
+
+[extensions]
+MFFFrames = ["DataFrames", "CSV"]
+MFFPlots = ["Plots", "StatsPlots"]
 
 [compat]
 Plots = "=1.38.8"
-StatsPlots = "=0.15.4"
-YFinance = "=0.1.2"
+DataFrames = "1.7.0"
+CSV = "0.10.15"
+StatsPlots = "0.15.4"
+YFinance = "0.1.2"
 julia = "1.8"
 
 [extras]
