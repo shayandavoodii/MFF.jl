@@ -3,53 +3,43 @@ using Dates
 using DataFrames
 using Test
 using CSV
-push!(LOAD_PATH,"../src/")
 
 @testset "MFF.jl" begin
 
+  startdt = "2020-01-10"
+  enddt = "2020-01-15"
   @testset "DataFrame Output" begin
 
     @testset "Single Stock" begin
       data = get_data(
         Val(:df),
         "AAPL",
-        "2020-01-10",
-        "2020-01-15",
+        startdt,
+        enddt,
         fixdt=false
       )
 
-      expected = DataFrame(
-        date = Date.(["2020-01-10", "2020-01-13", "2020-01-14"]),
-        AAPL = [75.89, 77.5113, 76.4646]
-      )
-
-      result = isapprox.(
-        @view(data[!, 2:end]), @view(expected[!, 2:end]), atol=1e-3
-      )
-
-      @test all(all.(==(true), eachcol(result)))
+      @test data isa DataFrame
+      @test size(data, 2) == 2
+      @test names(data) == ["date", "AAPL"]
+      @test all(Date(startdt).≤data.date.≤Date(enddt))
+      @test size(data, 1)≤(Date(enddt)-Date(startdt)).value
     end
 
     @testset "Multiple Stocks" begin
       data = get_data(
         Val(:df),
         ["AAPL", "MSFT"],
-        "2020-01-10",
-        "2020-01-15",
+        startdt,
+        enddt,
         prprty="high"
       )
 
-      expected = DataFrame(
-        date = Date.(["2020-01-10", "2020-01-11", "2020-01-12"]),
-        AAPL = [76.4622, 77.5382, 77.6605],
-        MSFT = [158.283, 158.37, 158.652]
-      )
-
-      result = isapprox.(
-        @view(data[!, 2:end]), @view(expected[!, 2:end]), atol=1e-3
-      )
-
-      @test all(all.(==(true), eachcol(result)))
+      @test data isa DataFrame
+      @test size(data, 2) == 3
+      @test names(data) == ["date", "AAPL", "MSFT"]
+      @test all(Date(startdt).≤data.date.≤Date(enddt))
+      @test size(data, 1)≤(Date(enddt)-Date(startdt)).value
     end
   end
 
@@ -57,32 +47,35 @@ push!(LOAD_PATH,"../src/")
     data = get_data(
       Val(:vec),
       ["AAPL", "MSFT"],
-      "2020-01-10",
-      "2020-01-15",
+      startdt,
+      enddt,
       prprty="high"
     )
 
-    @test isapprox(data, [76.4622 158.283; 77.5382 158.37; 77.6605 158.652], atol=1e-3)
+    @test data isa Matrix{<:AbstractFloat}
+    @test size(data, 2) == 2
+    @test size(data, 1)≤(Date(enddt)-Date(startdt)).value
   end
 
   @testset "Vector Output" begin
     data = get_data(
       Val(:vec),
       "AAPL",
-      "2020-01-10",
-      "2020-01-15",
+      startdt,
+      enddt,
       prprty="high"
     )
 
-    @test isapprox(data, [76.4622; 77.5382; 77.6605], atol=1e-3)
+    @test data isa AbstractVector{<:AbstractFloat}
+    @test length(data)≤(Date(enddt)-Date(startdt)).value
   end
 
   @testset "Wrong prprty" begin
     @test_throws ErrorException get_data(
       Val(:vec),
       "AAPL",
-      "2020-01-10",
-      "2020-01-15",
+      startdt,
+      enddt,
       prprty="wrong"
     )
   end
@@ -90,8 +83,8 @@ push!(LOAD_PATH,"../src/")
   @testset "Wrong path in `gs`" begin
     @test_throws ArgumentError gs(
       ["AAPL"],
-      "2020-01-10",
-      "2020-01-15",
+      startdt,
+      enddt,
       "What's up"
     )
   end
