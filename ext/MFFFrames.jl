@@ -55,6 +55,7 @@ function MFF.get_data(
   return dataframe
 end
 
+# COV_EXCL_START
 function MFF.gs(
   stocks::Vector{String},
   startdt::String,
@@ -87,6 +88,7 @@ function MFF.gs(
   CSV.write(joinpath(path, prefix*"dates_$(market)"*suffix*".csv"), dates)
   println("Saved dates data to $(joinpath(path, prefix*"dates_$(market)"*suffix*".csv"))")
 end
+# COV_EXCL_STOP
 
 """
     fix_dates!(df::DataFrame, dates::Vector{Date})

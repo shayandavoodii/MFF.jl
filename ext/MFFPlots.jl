@@ -3,7 +3,7 @@ module MFFFrames
 using Plots
 using StatsPlots
 using MFF
-
+# COV_EXCL_START
 const PLOT_KWARGS = (;
   legend=:outerright,
   legend_title="Stocks",
@@ -78,5 +78,5 @@ function MFF.plot_data(df::Vector, title::String, stock::String; kwargs::NamedTu
   )
   display(p)
 end
-
+# COV_EXCL_STOP
 end # module
