@@ -5,12 +5,15 @@
       startdt::String,
       enddt::String;
       prprty::String="adjclose",
-      rng::Nothing=nothing,
-      fixdt::Bool=true,
-      kwargs::NamedTuple=(;title=prprty))::DataFrame
+      rng::String="1d",
+      plot::Bool=false,
+      kwargs::NamedTuple=(;title=prprty)
     )
 
 Fetch data from Yahoo Finance and return a DataFrame.
+
+!!! note
+    You should import the `DataFrames` package if you would like to get the result as a DataFrame.
 
 # Arguments
 - `::Val{:df}`: Return a DataFrame.
@@ -19,62 +22,52 @@ Fetch data from Yahoo Finance and return a DataFrame.
 - `enddt::String`: The end date. The format is "YYYY-MM-DD".
 - `prprty::String="adjclose"`: The property to fetch. The other options are `"open"`, `"high"`, `"low"`, `"close"`, `"vol"`, `"timestamp"`.
 - `rng::Nothing=nothing`: The range of the data. The other options are `"1d"`, `"5d"`, `"1mo"`, `"3mo"`, `"6mo"`, `"1y"`, `"2y"`, `"5y"`, `"10y"`.
-- `fixdt::Bool=true`: Fix the dates. If `true`, the dates will be fixed to the range of the data. If `false`, the dates will be the dates of the data.
+- `fixdt::Bool=false`: Fix the dates. If `true`, the dates will be fixed to the range of the data. If `false`, the dates will be the dates of the data.
 - `plot::Bool=false`: Plot the data.
 - `kwargs::NamedTuple=(;title=prprty)`: The keyword arguments for the `plot` function. The default title is the property. The other options are `legend`, `legend_title`, `ylabel`, `title`, `size`, `left_margin`, `bottom_margin`, `dpi`, and `marker`.
 
 # Returns
-- `::DataFrame`: The DataFrame of the data.
+- `Union{Vector, Nothing}`: The DataFrame of the data or `nothing`.
 
 # Methods
-- `get_data(::Val{:df}, stock::String, startdt::String, enddt::String; prprty::String="adjclose", rng::Nothing=nothing, fixdt::Bool=true)::DataFrame`
-- `get_data(::Val{:vec}, stock::String, startdt::String, enddt::String; prprty::String="adjclose", rng::Nothing=nothing)::Vector{Vector}`
+- `get_data(::Val{:vec}, stock::String, startdt::String, enddt::String; prprty::String="adjclose", rng::Nothing=nothing)
 
 # Examples
 ```julia
-julia> using MFF
-
-julia> get_data(Val(:df), "AAPL", "2020-01-10", "2020-01-15", fixdt=false)
-3×2 DataFrame
- Row │ date        AAPL
-     │ Date        Float64
-─────┼─────────────────────
-   1 │ 2020-01-10  75.89
-   2 │ 2020-01-13  77.5113
-   3 │ 2020-01-14  76.4646
+julia> using MFF, DataFrames
 
 julia> get_data(Val(:df), "AAPL", "2020-01-10", "2020-01-15")
 3×2 DataFrame
  Row │ date        AAPL
      │ Date        Float64
 ─────┼─────────────────────
-   1 │ 2020-01-10  75.89
-   2 │ 2020-01-11  77.5113
-   3 │ 2020-01-12  76.4646
+   1 │ 2020-01-10  75.2149
+   2 │ 2020-01-13  76.8218
+   3 │ 2020-01-14  75.7844
+
+julia> get_data(Val(:df), "AAPL", "2020-01-10", "2020-01-15", fixdt=true)
+3×2 DataFrame
+ Row │ date        AAPL
+     │ Date        Float64
+─────┼─────────────────────
+   1 │ 2020-01-10  75.2149
+   2 │ 2020-01-11  76.8218
+   3 │ 2020-01-12  75.7844
 
 julia> get_data(Val(:df), "AAPL", "2020-01-10", "2020-01-15", prprty="open")
 3×2 DataFrame
  Row │ date        AAPL
      │ Date        Float64
 ─────┼─────────────────────
-   1 │ 2020-01-10  75.956
-   2 │ 2020-01-11  76.2103
-   3 │ 2020-01-12  77.4477
+   1 │ 2020-01-10  75.2803
+   2 │ 2020-01-13  75.5324
+   3 │ 2020-01-14  76.7588
 
-julia> get_data(Val(:df), ["AAPL", "MSFT"], "2020-01-10", "2020-01-15", prprty="high")
-3×3 DataFrame
-Row │ date        AAPL     MSFT
-    │ Date        Float64  Float64
-─────┼──────────────────────────────
-  1 │ 2020-01-10  76.4622  158.283
-  2 │ 2020-01-11  77.5382  158.37
-  3 │ 2020-01-12  77.6605  158.652
-
-julia> get_data(Val(:vec), ["AAPL", "MSFT"], "2020-01-10", "2020-01-15", prprty="high")
-3×2 Matrix{Float64}:
-76.4622  158.283
-77.5382  158.37
-77.6605  158.652
+julia> get_data(Val(:vec), "AAPL", "2020-01-10", "2020-01-15")
+3-element Vector{Float64}:
+ 75.2148666381836
+ 76.82177734375
+ 75.78443908691406
 ```
 """
 function get_data(
@@ -100,6 +93,75 @@ function get_data(
   return val
 end
 
+"""
+    get_data!(
+      ::Val{:df},
+      AbstractVector{String},
+      startdt::String,
+      enddt::String;
+      prprty::String="adjclose",
+      rng::Nothing=nothing,
+      fixdt::Bool=false,
+      kwargs::NamedTuple=(;title=prprty))::DataFrame
+    )
+
+Fetch data from Yahoo Finance and return a DataFrame. Alters the input vector by removing the invalid stock tickers.
+
+!!! note
+    You should import the `DataFrames` package if you would like to get the result as a DataFrame.
+
+# Arguments
+- `::Val{:df}`: Return a DataFrame.
+- `AbstractVector{String}`: The stock tickers.
+- `startdt::String`: The start date. The format is "YYYY-MM-DD".
+- `enddt::String`: The end date. The format is "YYYY-MM-DD".
+- `prprty::String="adjclose"`: The property to fetch. The other options are `"open"`, `"high"`, `"low"`, `"close"`, `"vol"`, `"timestamp"`.
+- `rng::Nothing=nothing`: The range of the data. The other options are `"1d"`, `"5d"`, `"1mo"`, `"3mo"`, `"6mo"`, `"1y"`, `"2y"`, `"5y"`, `"10y"`.
+- `fixdt::Bool=false`: Fix the dates. If `true`, the dates will be fixed to the range of the data. If `false`, the dates will be the dates of the data.
+- `plot::Bool=false`: Plot the data.
+- `kwargs::NamedTuple=(;title=prprty)`: The keyword arguments for the `plot` function. The default title is the property. The other options are `legend`, `legend_title`, `ylabel`, `title`, `size`, `left_margin`, `bottom_margin`, `dpi`, and `marker`.
+
+# Returns
+- `::Union{DataFrame, Nothing}`: The DataFrame of the data or `nothing`.
+
+# Methods
+- `get_data!(::Val{:vec}, AbstractVector{String}, startdt::String, enddt::String; prprty::String="adjclose", rng::Nothing=nothing)`
+
+# Examples
+```julia
+julia> get_data!(Val(:df), ["AAPL", "MSFT"], "2020-01-10", "2020-01-15", prprty="high")
+3×3 DataFrame
+ Row │ date        AAPL     MSFT
+     │ Date        Float64  Float64
+─────┼──────────────────────────────
+   1 │ 2020-01-10  75.782   156.118
+   2 │ 2020-01-13  76.8485  156.204
+   3 │ 2020-01-14  76.9696  156.481
+
+julia> get_data!(Val(:vec), ["AAPL", "MSFT"], "2020-01-10", "2020-01-15", prprty="high")
+3×2 Matrix{Float64}:
+ 75.782   156.118
+ 76.8484  156.204
+ 76.9696  156.481
+
+julia> assets = ["MSFT", "Invalid"];
+
+julia> get_data!(Val(:df), assets, "2020-01-10", "2020-01-15", prprty="high")
+┌ Warning: Invalid is not a valid Symbol.
+└ @ YFinance C:\\Users\\Shayan\\.julia\\packages\\YFinance\\lfXr3\\src\\Prices.jl:205
+3×2 DataFrame
+ Row │ date        MSFT
+     │ Date        Float64
+─────┼─────────────────────
+   1 │ 2020-01-10  156.118
+   2 │ 2020-01-13  156.204
+   3 │ 2020-01-14  156.481
+
+julia> assets
+1-element Vector{String}:
+ "MSFT"
+```
+"""
 function get_data!(
   ::Val{:vec},
   stock::AbstractVector{String},
