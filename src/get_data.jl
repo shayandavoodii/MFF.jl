@@ -119,6 +119,10 @@ function get_data(
   vec_of_dicts = get_prices.(stock, startdt=startdt, enddt=enddt, range=rng)
   vec_of_vecs = get.(vec_of_dicts, prprty, nothing)
   all(isnothing, vec_of_vecs) && return nothing
+  redundantidx = findall(isnothing, vec_of_vecs)
+  deleteat!(stock, redundantidx)
+  filter!(!isnothing, vec_of_vecs)
+  mat = stack(vec_of_vecs, dims=2)
   plot && plot_data(mat, prprty, stock, kwargs=kwargs)
   return mat
 end

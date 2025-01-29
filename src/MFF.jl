@@ -6,7 +6,7 @@ using Dates
 include("get_data.jl")
 include("utils.jl")
 
-export get_data
+export get_data, get_data!
 export gs
 
 end # module

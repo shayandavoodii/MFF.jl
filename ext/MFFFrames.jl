@@ -35,7 +35,7 @@ function MFF.get_data(
   return dataframe
 end
 
-function MFF.get_data(
+function MFF.get_data!(
   ::Val{:df},
   stock::Vector{String},
   startdt::String,
@@ -54,6 +54,10 @@ function MFF.get_data(
   vec_of_dicts = MFF.get_prices.(stock, startdt=startdt, enddt=enddt, range=rng)
   vec_of_vecs = get.(vec_of_dicts, prprty, nothing)
   all(isnothing, vec_of_vecs) && return nothing
+  redundantidx = findall(isnothing, vec_of_vecs)
+  deleteat!(stock, redundantidx)
+  deleteat!(vec_of_dicts, redundantidx)
+  filter!(!isnothing, vec_of_vecs)
   dataframe = DataFrame(vec_of_vecs, stock)
   datetime = get(vec_of_dicts[1], "timestamp", nothing)
   date = Date.(datetime)
