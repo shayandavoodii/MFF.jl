@@ -21,6 +21,7 @@ makedocs(
 )
 
 deploydocs(
-    repo="github.com/shayandavoodii/MFF.git",
-    devbranch = "master"
+    repo="github.com/shayandavoodii/MFF.jl.git",
+    devbranch = "master",
+    push_preview=true
 )
