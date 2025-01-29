@@ -8,7 +8,7 @@ makedocs(
     modules = [MFF],
     authors="Shayan Davoodi <sh0davoodi@gmail.com>",
     format = Documenter.HTML(
-        canonical = "https://shayandavoodii.github.io/MFF/",
+        repo = "https://github.com/shayandavoodii/MFF.jl",
         prettyurls = get(ENV, "CI", nothing) == "true"
     ),
     pages = [
