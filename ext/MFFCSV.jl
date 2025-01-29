@@ -6,7 +6,7 @@ using MFF
 
 # COV_EXCL_START
 function MFF.gs(
-  stocks::Vector{String},
+  stocks::AbstractVector{String},
   startdt::String,
   enddt::String,
   path::String;

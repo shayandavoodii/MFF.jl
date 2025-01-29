@@ -3,7 +3,7 @@ const properties = ("timestamp", "open", "high", "low", "close", "adjclose", "vo
 function plot_data end
 
 """
-    gs(stocks::Vector{String}, startdt::String, enddt::String, path::String; rng::Union{Nothing, String}=nothing, market::String="", prefix::String="", suffix::String="")
+    gs(stocks::AbstractVector{String}, startdt::String, enddt::String, path::String; rng::Union{Nothing, String}=nothing, market::String="", prefix::String="", suffix::String="")
 
 Get "adjusted close", "high", "low", "open", and "volume" data for a set of stocks and save them to a csv file.
 
@@ -11,7 +11,7 @@ Get "adjusted close", "high", "low", "open", and "volume" data for a set of stoc
     You should import the `CSV` and `DataFrames` packages before using this function.
 
 # Arguments
-- `stocks::Vector{String}`: A vector of stock tickers.
+- `stocks::AbstractVector{String}`: A vector of stock tickers.
 - `startdt::String`: The start date of the data.
 - `enddt::String`: The end date of the data.
 - `path::String`: The path to save the csv file.

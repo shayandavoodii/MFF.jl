@@ -36,7 +36,7 @@ end
 
 function MFF.get_data!(
   ::Val{:df},
-  stock::Vector{String},
+  stock::AbstractVector{String},
   startdt::String,
   enddt::String;
   prprty::String="adjclose",
@@ -67,13 +67,13 @@ function MFF.get_data!(
 end
 
 """
-    fix_dates!(df::DataFrame, dates::Vector{Date})
+    fix_dates!(df::DataFrame, dates::AbstractVector{Date})
 
 Fix date related column in `df` inplace by changing its frequency to daily.
 
 # Arguments
 - `df::DataFrame`: DataFrame object.
-- `dates::Vector{Date}`: Vector of dates to be used as the new date column.
+- `dates::AbstractVector{Date}`: Vector of dates to be used as the new date column.
 
 # Example
 ```julia
@@ -110,7 +110,7 @@ julia> df
    5 │ 2020-01-14      5  e
 ```
 """
-function fix_dates!(df::DataFrame, dates::Vector{Date})
+function fix_dates!(df::DataFrame, dates::AbstractVector{Date})
   firstdate = first(dates)
   enddate = (nrow(df)*Day(1))+firstdate-Day(1)
   rngdate = Date(firstdate):Day(1):enddate

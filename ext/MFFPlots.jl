@@ -3,6 +3,7 @@ module MFFFrames
 using Plots
 using StatsPlots
 using MFF
+
 # COV_EXCL_START
 const PLOT_KWARGS = (;
   legend=:outerright,
@@ -39,7 +40,7 @@ end
 function plot_data(
   df::Matrix,
   title::String,
-  stocks::Vector{String};
+  stocks::AbstractVector{String};
   kwargs::NamedTuple=PLOT_KWARGS
 )
   kwargs = merge((;title=title), kwargs)
@@ -60,7 +61,7 @@ function plot_data(
   display(p)
 end
 
-function MFF.plot_data(df::Vector, title::String, stock::String; kwargs::NamedTuple=PLOT_KWARGS)
+function MFF.plot_data(df::AbstractVector, title::String, stock::String; kwargs::NamedTuple=PLOT_KWARGS)
   kwargs = merge((;title=title), kwargs)
   kwargs = merge(PLOT_KWARGS, kwargs)
   p = plot(
@@ -79,4 +80,5 @@ function MFF.plot_data(df::Vector, title::String, stock::String; kwargs::NamedTu
   display(p)
 end
 # COV_EXCL_STOP
+
 end # module

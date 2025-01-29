@@ -102,7 +102,7 @@ end
 
 function get_data!(
   ::Val{:vec},
-  stock::Vector{String},
+  stock::AbstractVector{String},
   startdt::String,
   enddt::String;
   prprty::String="adjclose",
