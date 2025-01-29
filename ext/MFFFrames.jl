@@ -117,4 +117,4 @@ function fix_dates!(df::DataFrame, dates::Vector{Date})
   insertcols!(df, 1, :date => rngdate)
 end
 
-end
+end # module
