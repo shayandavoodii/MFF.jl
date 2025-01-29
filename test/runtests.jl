@@ -27,7 +27,7 @@ using CSV
     end
 
     @testset "Multiple Stocks" begin
-      data = get_data(
+      data = get_data!(
         Val(:df),
         ["AAPL", "MSFT"],
         startdt,
@@ -40,11 +40,69 @@ using CSV
       @test names(data) == ["date", "AAPL", "MSFT"]
       @test all(Date(startdt).≤data.date.≤Date(enddt))
       @test size(data, 1)≤(Date(enddt)-Date(startdt)).value
+
+      data = get_data!(
+        Val(:df),
+        ["ghjgh", "ghjehrf"],
+        startdt,
+        enddt,
+        prprty="high"
+      )
+
+      @test data isa Nothing
+
+      assets = ["ghjgh", "MSFT"]
+      data = get_data!(
+        Val(:df),
+        assets,
+        startdt,
+        enddt,
+        prprty="high"
+      )
+
+      @test data isa DataFrame
+      @test size(data, 2) == 2
+      @test names(data) == ["date", "MSFT"]
+      @test all(Date(startdt).≤data.date.≤Date(enddt))
+      @test size(data, 1)≤(Date(enddt)-Date(startdt)).value
+      @test assets == ["MSFT"]
+
+      assets = ["MSFT", "ghjgh"]
+      data = get_data!(
+        Val(:df),
+        assets,
+        startdt,
+        enddt,
+        prprty="high"
+      )
+
+      @test data isa DataFrame
+      @test size(data, 2) == 2
+      @test names(data) == ["date", "MSFT"]
+      @test all(Date(startdt).≤data.date.≤Date(enddt))
+      @test size(data, 1)≤(Date(enddt)-Date(startdt)).value
+      @test assets == ["MSFT"]
+
+      assets = ["MSFT", "ghjgh", "AAPL"]
+      data = get_data!(
+        Val(:df),
+        assets,
+        startdt,
+        enddt,
+        prprty="high"
+      )
+
+      @test data isa DataFrame
+      @test size(data, 2) == 3
+      @test names(data) == ["date", "MSFT", "AAPL"]
+      @test all(Date(startdt).≤data.date.≤Date(enddt))
+      @test size(data, 1)≤(Date(enddt)-Date(startdt)).value
+      @test assets == ["MSFT", "AAPL"]
     end
   end
 
   @testset "Matrix Output" begin
-    data = get_data(
+    data = get_data!(
       Val(:vec),
       ["AAPL", "MSFT"],
       startdt,
@@ -55,6 +113,58 @@ using CSV
     @test data isa Matrix{<:AbstractFloat}
     @test size(data, 2) == 2
     @test size(data, 1)≤(Date(enddt)-Date(startdt)).value
+
+    data = get_data!(
+      Val(:vec),
+      ["safrd", "sdryherh"],
+      startdt,
+      enddt,
+      prprty="high"
+    )
+
+    @test data isa Nothing
+
+    assets = ["aasf", "MSFT"]
+    data = get_data!(
+      Val(:vec),
+      assets,
+      startdt,
+      enddt,
+      prprty="high"
+    )
+
+    @test data isa Matrix{<:AbstractFloat}
+    @test size(data, 2) == 1
+    @test size(data, 1)≤(Date(enddt)-Date(startdt)).value
+    @test assets == ["MSFT"]
+
+    assets = ["MSFT", "aasf"]
+    data = get_data!(
+      Val(:vec),
+      assets,
+      startdt,
+      enddt,
+      prprty="high"
+    )
+
+    @test data isa Matrix{<:AbstractFloat}
+    @test size(data, 2) == 1
+    @test size(data, 1)≤(Date(enddt)-Date(startdt)).value
+    @test assets == ["MSFT"]
+
+    assets = ["MSFT", "aasf", "AAPL"]
+    data = get_data!(
+      Val(:vec),
+      assets,
+      startdt,
+      enddt,
+      prprty="high"
+    )
+
+    @test data isa Matrix{<:AbstractFloat}
+    @test size(data, 2) == 2
+    @test size(data, 1)≤(Date(enddt)-Date(startdt)).value
+    @test assets == ["MSFT", "AAPL"]
   end
 
   @testset "Vector Output" begin
