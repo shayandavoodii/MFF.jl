@@ -17,11 +17,11 @@ makedocs(
           "Functions" => "functions.md"
         ],
     ],
-    sitename = "MFF",
+    sitename = "MFF.jl",
 )
 
 deploydocs(
     repo="github.com/shayandavoodii/MFF.jl.git",
     devbranch = "master",
-    push_preview=true
+    push_preview = true
 )
