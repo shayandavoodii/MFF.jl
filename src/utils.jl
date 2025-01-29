@@ -1,3 +1,4 @@
+const properties = ("timestamp", "open", "high", "low", "close", "adjclose", "vol")
 function plot_data end
 
 function check_prprty(val, prprty)

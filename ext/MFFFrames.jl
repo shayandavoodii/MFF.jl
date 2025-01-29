@@ -15,13 +15,18 @@ function MFF.get_data(
   fixdt::Bool=true,
   plot::Bool=false,
   kwargs::NamedTuple=(;title=prprty)
-)::DataFrame
+)
 
-  @assert Date(enddt)>Date(startdt) "The end date ($enddt) isn't greater than start date ($startdt))"
+  Date(enddt)>Date(startdt) || throw(ArgumentError("The end date ($enddt) isn't greater /
+  than start date ($startdt))"))
+  prprty ∉ MFF.properties && throw(ArgumentError(
+  "property ($prprty) is not valid or doesn't exist. Valid properties are: 'timestamp', /
+  'open', 'high', 'low', 'close', 'adjclose', 'vol'. "))
   dict = MFF.get_prices(stock, startdt=startdt, enddt=enddt, range=rng)
   val = get(dict, prprty, nothing)
-  MFF.check_prprty(val, prprty)
+  isnothing(val) && return nothing
   datetime = get(dict, "timestamp", nothing)
+  isnothing(datetime) && @warn "'timestamp' key isn't available for $stock" && return nothing
   date = Date.(datetime)
   dataframe = DataFrame([val], [stock])
   fixdt && fix_dates!(dataframe, date)
@@ -40,12 +45,15 @@ function MFF.get_data(
   fixdt::Bool=true,
   plot::Bool=false,
   kwargs::NamedTuple=(;title=prprty)
-)::DataFrame
-
-  @assert Date(enddt)>Date(startdt) "The end date ($enddt) isn't greater than start date ($startdt))"
+)
+  Date(enddt)>Date(startdt) || throw(ArgumentError("The end date ($enddt) isn't greater /
+  than start date ($startdt))"))
+  prprty ∉ MFF.properties && throw(ArgumentError(
+  "property ($prprty) is not valid or doesn't exist. Valid properties are: 'timestamp', /
+  'open', 'high', 'low', 'close', 'adjclose', 'vol'. "))
   vec_of_dicts = MFF.get_prices.(stock, startdt=startdt, enddt=enddt, range=rng)
   vec_of_vecs = get.(vec_of_dicts, prprty, nothing)
-  MFF.check_prprty.(vec_of_vecs, prprty)
+  all(isnothing, vec_of_vecs) && return nothing
   dataframe = DataFrame(vec_of_vecs, stock)
   datetime = get(vec_of_dicts[1], "timestamp", nothing)
   date = Date.(datetime)

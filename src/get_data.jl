@@ -8,7 +8,7 @@
       rng::Nothing=nothing,
       fixdt::Bool=true,
       kwargs::NamedTuple=(;title=prprty))::DataFrame
-    )::DataFrame
+    )
 
 Fetch data from Yahoo Finance and return a DataFrame.
 
@@ -86,12 +86,16 @@ function get_data(
   rng::String="1d",
   plot::Bool=false,
   kwargs::NamedTuple=(;title=prprty)
-)::Vector{Float64}
+)
 
-  @assert Date(enddt)>Date(startdt) "The end date ($enddt) isn't greater than start date ($startdt))"
+  Date(enddt)>Date(startdt) || throw(ArgumentError("The end date ($enddt) isn't greater /
+  than start date ($startdt))"))
+  prprty ∉ properties && throw(ArgumentError(
+  "property ($prprty) is not valid or doesn't exist. Valid properties are: 'timestamp', /
+  'open', 'high', 'low', 'close', 'adjclose', 'vol'. "))
   dict = get_prices(stock, startdt=startdt, enddt=enddt, range=rng)
   val = get(dict, prprty, nothing)
-  MFF.check_prprty(val, prprty)
+  isnothing(val) && return nothing
   plot && plot_data(val, prprty, stock, kwargs=kwargs)
   return val
 end
@@ -105,13 +109,16 @@ function get_data(
   rng::String="1d",
   plot::Bool=false,
   kwargs::NamedTuple=(;title=prprty)
-)::Matrix{Float64}
+)
 
-  @assert Date(enddt)>Date(startdt) "The end date ($enddt) isn't greater than start date ($startdt))"
+  Date(enddt)>Date(startdt) || throw(ArgumentError("The end date ($enddt) isn't greater /
+  than start date ($startdt))"))
+  prprty ∉ properties && throw(ArgumentError(
+  "property ($prprty) is not valid or doesn't exist. Valid properties are: 'timestamp', /
+  'open', 'high', 'low', 'close', 'adjclose', 'vol'. "))
   vec_of_dicts = get_prices.(stock, startdt=startdt, enddt=enddt, range=rng)
   vec_of_vecs = get.(vec_of_dicts, prprty, nothing)
-  MFF.check_prprty.(vec_of_vecs, prprty)
-  mat = reduce(hcat, vec_of_vecs)
+  all(isnothing, vec_of_vecs) && return nothing
   plot && plot_data(mat, prprty, stock, kwargs=kwargs)
   return mat
 end
