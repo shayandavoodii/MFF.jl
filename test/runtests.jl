@@ -14,8 +14,7 @@ using Test
         Val(:df),
         "AAPL",
         startdt,
-        enddt,
-        fixdt=false
+        enddt
       )
 
       @test data isa DataFrame
@@ -28,8 +27,7 @@ using Test
         Val(:df),
         "asdasd",
         startdt,
-        enddt,
-        fixdt=false
+        enddt
       )
 
       @test data isa Nothing
