@@ -1,7 +1,7 @@
 name = "MFF"
 uuid = "99a43ef4-9f3f-47d4-9871-ef3d7e68cea8"
-authors = ["Shayan Davoodi"]
-version = "2.2.0"
+authors = ["Shayan <sh0davoodi@gmail.com>"]
+version = "3.0.0"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
