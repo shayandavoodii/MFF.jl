@@ -11,7 +11,7 @@ function MFF.get_data(
   enddt::String;
   prprty::String="adjclose",
   rng::String="1d",
-  fixdt::Bool=true,
+  fixdt::Bool=false,
   plot::Bool=false,
   kwargs::NamedTuple=(;title=prprty)
 )
@@ -41,7 +41,7 @@ function MFF.get_data!(
   enddt::String;
   prprty::String="adjclose",
   rng::String="1d",
-  fixdt::Bool=true,
+  fixdt::Bool=false,
   plot::Bool=false,
   kwargs::NamedTuple=(;title=prprty)
 )
