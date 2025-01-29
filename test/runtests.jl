@@ -201,15 +201,86 @@ using CSV
   end
 
   @testset "Wrong prprty" begin
-    @test_throws ErrorException get_data(
+    @test_throws ArgumentError get_data(
       Val(:vec),
       "AAPL",
       startdt,
       enddt,
       prprty="wrong"
     )
+
+    @test_throws ArgumentError get_data!(
+      Val(:vec),
+      ["AAPL", "MSFT"],
+      startdt,
+      enddt,
+      prprty="wrong"
+    )
+
+    @test_throws ArgumentError get_data(
+      Val(:df),
+      "AAPL",
+      startdt,
+      enddt,
+      prprty="wrong"
+    )
+
+    @test_throws ArgumentError get_data!(
+      Val(:df),
+      ["AAPL", "MSFT"],
+      startdt,
+      enddt,
+      prprty="wrong"
+    )
   end
 
+  @testset "Wrong stratdt & enddt" begin
+    @test_throws ArgumentError get_data(
+      Val(:vec),
+      "AAPL",
+      "2020-01-15",
+      "2020-01-10"
+    )
+
+    @test_throws ArgumentError get_data!(
+      Val(:vec),
+      ["AAPL", "MSFT"],
+      "2020-01-15",
+      "2020-01-10"
+    )
+
+    @test_throws ArgumentError get_data(
+      Val(:df),
+      "AAPL",
+      "2020-01-15",
+      "2020-01-10"
+    )
+
+    @test_throws ArgumentError get_data!(
+      Val(:df),
+      ["AAPL", "MSFT"],
+      "2020-01-15",
+      "2020-01-10"
+    )
+  end
+
+  @testset "property check" begin
+    @test_throws ArgumentError get_data(
+      Val(:vec),
+      "AAPL",
+      startdt,
+      enddt,
+      prprty="wrong"
+    )
+
+    @test_throws ArgumentError get_data!(
+      Val(:vec),
+      ["AAPL", "MSFT"],
+      startdt,
+      enddt,
+      prprty="wrong"
+    )
+  end
   @testset "Wrong path in `gs`" begin
     @test_throws ArgumentError gs(
       ["AAPL"],
