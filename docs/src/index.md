@@ -11,15 +11,15 @@ This tiny package provides a simple framework for fetching data from the Yahoo F
 The package can be installed using the Julia package manager. From the Julia REPL, type `]` to enter the Pkg REPL mode and run:
 
 ```julia
-pkg> add https://github.com/shayandavoodii/MFF.git
+pkg> add https://github.com/shayandavoodii/MFF.jl.git
 ```
 
 Fetch Close Prices for `["AAPL", "MSFT"]` from `2020-01-01` to `2020-01-10` and store the result in a `DataFrame`:
 
 ```julia
-julia> using MFF
+julia> using MFF, DataFrames
 
-julia> get_data(Val(:df), ["AAPL", "MSFT"], "2020-01-01", "2020-01-10")
+julia> get_data(Val(:df), ["AAPL", "MSFT"], "2020-01-01", "2020-01-10", fixdt=true)
 6×3 DataFrame
  Row │ date        AAPL     MSFT    
      │ Date        Float64  Float64 
