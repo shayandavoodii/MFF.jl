@@ -2,7 +2,6 @@ using MFF
 using Dates
 using DataFrames
 using Test
-using CSV
 
 @testset "MFF.jl" begin
 
@@ -282,6 +281,7 @@ using CSV
     )
   end
   @testset "Wrong path in `gs`" begin
+  using CSV
     @test_throws ArgumentError gs(
       ["AAPL"],
       startdt,
