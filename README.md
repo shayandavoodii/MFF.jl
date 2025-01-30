@@ -1,7 +1,7 @@
-# MFF
+# MFF.jl
 
 [![CI](https://github.com/shayandavoodii/MFF/actions/workflows/ci.yml/badge.svg)](https://github.com/shayandavoodii/MFF/actions/workflows/ci.yml)
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://shayandavoodii.github.io/MFF)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://shayandavoodii.github.io/MFF.jl)
 [![codecov](https://codecov.io/gh/shayandavoodii/MFF/branch/master/graph/badge.svg?token=K6SUOSEU4Q)](https://codecov.io/gh/shayandavoodii/MFF)
 
 This tiny package provides a simple framework for fetching data from the Yahoo Finance API. It is designed to be used with `DataFrames.jl` and `YFinance.jl`. However, the `DataFrames.jl` dependency is shipped as an extension to the package. The package is designed for my personal use and is not intended to be used by others. However, if you find it useful, feel free to use it.  
@@ -19,7 +19,7 @@ The package provides a single function `get_data` which takes a `Val` object as 
 ```julia
 julia> using MFF, DataFrames
 
-julia> get_data(Val(:df), "AAPL", "2020-01-10", "2020-01-15")
+julia> get_data(Val(:df), "AAPL", "2020-01-10", "2020-01-15", fixdt=true)
 3×2 DataFrame
  Row │ date        AAPL
      │ Date        Float64
