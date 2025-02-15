@@ -20,11 +20,16 @@ Fetch data from Yahoo Finance and return a DataFrame.
 - `stock::String`: The stock ticker.
 - `startdt::String`: The start date. The format is "YYYY-MM-DD".
 - `enddt::String`: The end date. The format is "YYYY-MM-DD".
-- `prprty::String="adjclose"`: The property to fetch. The other options are `"open"`, `"high"`, `"low"`, `"close"`, `"vol"`, `"timestamp"`.
-- `rng::Nothing=nothing`: The range of the data. The other options are `"1d"`, `"5d"`, `"1mo"`, `"3mo"`, `"6mo"`, `"1y"`, `"2y"`, `"5y"`, `"10y"`.
-- `fixdt::Bool=false`: Fix the dates. If `true`, the dates will be fixed to the range of the data. If `false`, the dates will be the dates of the data.
+- `prprty::String="adjclose"`: The property to fetch. The other options are `"open"`, \
+  `"high"`, `"low"`, `"close"`, `"vol"`, `"timestamp"`.
+- `rng::Nothing=nothing`: The range of the data. The other options are `"1d"`, `"5d"`, \
+  `"1mo"`, `"3mo"`, `"6mo"`, `"1y"`, `"2y"`, `"5y"`, `"10y"`.
+- `fixdt::Bool=false`: Fix the dates. If `true`, the dates will be fixed to the range of \
+  the data. If `false`, the dates will be the dates of the data.
 - `plot::Bool=false`: Plot the data.
-- `kwargs::NamedTuple=(;title=prprty)`: The keyword arguments for the `plot` function. The default title is the property. The other options are `legend`, `legend_title`, `ylabel`, `title`, `size`, `left_margin`, `bottom_margin`, `dpi`, and `marker`.
+- `kwargs::NamedTuple=(;title=prprty)`: The keyword arguments for the `plot` function. The \
+  default title is the property. The other options are `legend`, `legend_title`, `ylabel`, \
+  `title`, `size`, `left_margin`, `bottom_margin`, `dpi`, and `marker`.
 
 # Returns
 - `Union{Vector, Nothing}`: The DataFrame of the data or `nothing`.
@@ -81,10 +86,10 @@ function get_data(
   kwargs::NamedTuple=(;title=prprty)
 )
 
-  Date(enddt)>Date(startdt) || throw(ArgumentError("The end date ($enddt) isn't greater /
+  Date(enddt)>Date(startdt) || throw(ArgumentError("The end date ($enddt) isn't greater \
   than start date ($startdt))"))
   prprty ∉ properties && throw(ArgumentError(
-  "property ($prprty) is not valid or doesn't exist. Valid properties are: 'timestamp', /
+  "property ($prprty) is not valid or doesn't exist. Valid properties are: 'timestamp', \
   'open', 'high', 'low', 'close', 'adjclose', 'vol'. "))
   dict = get_prices(stock, startdt=startdt, enddt=enddt, range=rng)
   val = get(dict, prprty, nothing)
@@ -115,17 +120,22 @@ Fetch data from Yahoo Finance and return a DataFrame. Alters the input vector by
 - `AbstractVector{String}`: The stock tickers.
 - `startdt::String`: The start date. The format is "YYYY-MM-DD".
 - `enddt::String`: The end date. The format is "YYYY-MM-DD".
-- `prprty::String="adjclose"`: The property to fetch. The other options are `"open"`, `"high"`, `"low"`, `"close"`, `"vol"`, `"timestamp"`.
-- `rng::Nothing=nothing`: The range of the data. The other options are `"1d"`, `"5d"`, `"1mo"`, `"3mo"`, `"6mo"`, `"1y"`, `"2y"`, `"5y"`, `"10y"`.
-- `fixdt::Bool=false`: Fix the dates. If `true`, the dates will be fixed to the range of the data. If `false`, the dates will be the dates of the data.
+- `prprty::String="adjclose"`: The property to fetch. The other options are `"open"`, \
+  `"high"`, `"low"`, `"close"`, `"vol"`, `"timestamp"`.
+- `rng::Nothing=nothing`: The range of the data. The other options are `"1d"`, `"5d"`, \
+  `"1mo"`, `"3mo"`, `"6mo"`, `"1y"`, `"2y"`, `"5y"`, `"10y"`.
+- `fixdt::Bool=false`: Fix the dates. If `true`, the dates will be fixed to the range of \
+  the data. If `false`, the dates will be the dates of the data.
 - `plot::Bool=false`: Plot the data.
-- `kwargs::NamedTuple=(;title=prprty)`: The keyword arguments for the `plot` function. The default title is the property. The other options are `legend`, `legend_title`, `ylabel`, `title`, `size`, `left_margin`, `bottom_margin`, `dpi`, and `marker`.
+- `kwargs::NamedTuple=(;title=prprty)`: The keyword arguments for the `plot` function. \
+  The default title is the property. The other options are `legend`, `legend_title`, \
+  `ylabel`, `title`, `size`, `left_margin`, `bottom_margin`, `dpi`, and `marker`.
 
 # Returns
 - `::Union{DataFrame, Nothing}`: The DataFrame of the data or `nothing`.
 
 # Methods
-- `get_data!(::Val{:vec}, AbstractVector{String}, startdt::String, enddt::String; prprty::String="adjclose", rng::Nothing=nothing)`
+`get_data!(::Val{:vec}, AbstractVector{String}, startdt::String, enddt::String; prprty::String="adjclose", rng::Nothing=nothing)`
 
 # Examples
 ```julia
@@ -173,11 +183,11 @@ function get_data!(
   kwargs::NamedTuple=(;title=prprty)
 )
 
-  Date(enddt)>Date(startdt) || throw(ArgumentError("The end date ($enddt) isn't greater /
+  Date(enddt)>Date(startdt) || throw(ArgumentError("The end date ($enddt) isn't greater \
   than start date ($startdt))"))
   prprty ∉ properties && throw(ArgumentError(
-  "property ($prprty) is not valid or doesn't exist. Valid properties are: 'timestamp', /
-  'open', 'high', 'low', 'close', 'adjclose', 'vol'. "))
+  "property ($prprty) is not valid or doesn't exist. Valid properties are: 'timestamp', \
+  'open', 'high', 'low', 'close', 'adjclose', 'vol'."))
   vec_of_dicts = get_prices.(stock, startdt=startdt, enddt=enddt, range=rng)
   vec_of_vecs = get.(vec_of_dicts, prprty, nothing)
   all(isnothing, vec_of_vecs) && return nothing
