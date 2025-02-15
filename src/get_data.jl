@@ -110,7 +110,8 @@ end
       kwargs::NamedTuple=(;title=prprty))::DataFrame
     )
 
-Fetch data from Yahoo Finance and return a DataFrame. Alters the input vector by removing the invalid stock tickers.
+Fetch data from Yahoo Finance and return a DataFrame. Alters the input vector by removing \
+the invalid stock tickers and inconsistent tickers in terms of data length.
 
 !!! note
     You should import the `DataFrames` package if you would like to get the result as a DataFrame.
