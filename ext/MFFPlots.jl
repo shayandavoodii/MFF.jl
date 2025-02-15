@@ -61,11 +61,11 @@ function plot_data(
   display(p)
 end
 
-function MFF.plot_data(df::AbstractVector, title::String, stock::String; kwargs::NamedTuple=PLOT_KWARGS)
+function MFF.plot_data(vec::AbstractVector, title::String, stock::String; kwargs::NamedTuple=PLOT_KWARGS)
   kwargs = merge((;title=title), kwargs)
   kwargs = merge(PLOT_KWARGS, kwargs)
   p = plot(
-    df,
+    vec,
     legend=kwargs.legend,
     legend_title=kwargs.legend_title,
     label=stock,
