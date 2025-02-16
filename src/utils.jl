@@ -63,7 +63,7 @@ julia> MFF.checklen!(b)
  1
 ```
 """
-function checklen!(vec::AbstractVector{<:AbstractVector})
+function checklen!(vec::AbstractVector{T}) where T<:Union{Nothing, AbstractVector}
   lengths = length.(vec)
   all(lengths .== lengths[1]) && return nothing
   _, maxlen = frequency(lengths)
