@@ -287,4 +287,16 @@ using Test
       "What's up"
     )
   end
+
+  @testset "Utils.jl" begin
+    b = [
+        [1,2,1,2],
+        [2,4,5],
+        [2,2,3,4],
+        [1,2]
+    ]
+
+    @test MFF.checklen!(b) == BitVector((false, true, false, true))
+    @test b == [[1,2,1,2], [2,2,3,4]]
+  end
 end
