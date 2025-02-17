@@ -105,6 +105,8 @@ using Test
       @test all(Date(startdt).≤data.date.≤Date(enddt))
       @test size(data, 1)≤(Date(enddt)-Date(startdt)).value
       @test assets == ["MSFT", "AAPL"]
+
+      @test_logs (:warn, r"The following assets have inconsistent data length: \[\"688041.SS\"\]") get_data!(Val(:df), ["688008.SS", "688009.SS", "688041.SS"], "2022-04-01", "2024-12-25", prprty="vol")
     end
   end
 
