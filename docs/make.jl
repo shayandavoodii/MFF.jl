@@ -7,6 +7,7 @@ DocMeta.setdocmeta!(MFF, :DocTestSetup, :(using MFF); recursive=true)
 makedocs(
     modules = [MFF],
     authors="Shayan Davoodi <sh0davoodi@gmail.com>",
+    checkdocs=:exports,
     format = Documenter.HTML(
         canonical = "https://shayandavoodii.github.io/MFF.jl/",
         prettyurls = get(ENV, "CI", nothing) == "true"
