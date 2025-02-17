@@ -196,6 +196,8 @@ function get_data!(
   deleteat!(stock, redundantidx)
   filter!(!isnothing, vec_of_vecs)
   idxinconsistent = checklen!(vec_of_vecs)
+  !isnothing(idxinconsistent) && @warn "The following assets have inconsistent data length: \
+  $(stock[idxinconsistent])"
   !isnothing(idxinconsistent) && deleteat!(stock, idxinconsistent)
   mat = stack(vec_of_vecs, dims=2)
   plot && plot_data(mat, prprty, stock, kwargs=kwargs)
