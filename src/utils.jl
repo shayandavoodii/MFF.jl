@@ -1,5 +1,9 @@
 const properties = ("timestamp", "open", "high", "low", "close", "adjclose", "vol")
 
+struct InconsistencyError <: Exception
+  msg::String
+end
+
 function plot_data end
 
 """
@@ -69,6 +73,7 @@ function checklen!(vec::AbstractVector{T}) where T<:Union{Nothing, AbstractVecto
   _, maxlen = frequency(lengths)
   idxdel = lengths .!= maxlen
   deleteat!(vec, idxdel)
+  length(vec) == 1 && throw(InconsistencyError("The data length for the tickers does not match, and they will not be concatenated."))
   return idxdel
 end
 
