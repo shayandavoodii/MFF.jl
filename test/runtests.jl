@@ -172,6 +172,8 @@ using Test
     @test size(data, 2) == 2
     @test size(data, 1)≤(Date(enddt)-Date(startdt)).value
     @test assets == ["MSFT", "AAPL"]
+
+    @test_logs (:warn, r"The following assets have inconsistent data length: \[\"688041.SS\", \"688047.SS\"\]") get_data!(Val(:vec), ["688041.SS", "688047.SS", "688008.SS", "688009.SS"], "2022-04-01", "2024-12-25", prprty="vol")
   end
 
   @testset "Vector Output" begin
@@ -298,5 +300,17 @@ using Test
 
     @test MFF.checklen!(b) == BitVector((false, true, false, true))
     @test b == [[1,2,1,2], [2,2,3,4]]
+
+  end
+  @testset "Other Exceptions" begin
+    startdt = "2022-04-01"
+    enddt = "2024-12-25"
+    @test_throws MFF.InconsistencyError get_data!(
+      Val(:vec),
+      ["688041.SS", "688047.SS"],
+      startdt,
+      enddt,
+      prprty = "vol"
+    )
   end
 end
