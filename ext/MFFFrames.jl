@@ -58,6 +58,8 @@ function MFF.get_data!(
   deleteat!(vec_of_dicts, redundantidx)
   filter!(!isnothing, vec_of_vecs)
   idxinconsistent = MFF.checklen!(vec_of_vecs)
+  !isnothing(idxinconsistent) && @warn "The following assets have inconsistent data length: \
+  $(stock[idxinconsistent])"
   if !isnothing(idxinconsistent)
     deleteat!(stock, idxinconsistent)
     deleteat!(vec_of_dicts, idxinconsistent)
