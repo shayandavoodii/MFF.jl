@@ -25,6 +25,22 @@ using Test
 
       data = get_data(
         Val(:df),
+        "AAPL",
+        startdt,
+        enddt,
+        fixdt=true
+      )
+
+      @test data isa DataFrame
+      @test size(data, 2) == 2
+      @test names(data) == ["date", "AAPL"]
+      @test all(Date(startdt).≤data.date.≤Date(enddt))
+      @test size(data, 1)≤(Date(enddt)-Date(startdt)).value
+      n = size(data, 1)
+      @test data.date[end] == Date(startdt) + Dates.Day(n-1)
+
+      data = get_data(
+        Val(:df),
         "asdasd",
         startdt,
         enddt
@@ -47,6 +63,23 @@ using Test
       @test names(data) == ["date", "AAPL", "MSFT"]
       @test all(Date(startdt).≤data.date.≤Date(enddt))
       @test size(data, 1)≤(Date(enddt)-Date(startdt)).value
+
+      data = get_data!(
+        Val(:df),
+        ["AAPL", "MSFT"],
+        startdt,
+        enddt,
+        prprty="high",
+        fixdt=true
+      )
+
+      @test data isa DataFrame
+      @test size(data, 2) == 3
+      @test names(data) == ["date", "AAPL", "MSFT"]
+      @test all(Date(startdt).≤data.date.≤Date(enddt))
+      @test size(data, 1)≤(Date(enddt)-Date(startdt)).value
+      n = size(data, 1)
+      @test data.date[end] == Date(startdt) + Dates.Day(n-1)
 
       data = get_data!(
         Val(:df),
